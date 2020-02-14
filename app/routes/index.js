@@ -1,8 +1,8 @@
 import initNotificationRoutes from "./notificationRoutes";
 
 const initRoutes = app => {
-  app.use(`/notifications`, initNotificationRoutes());
-  app.get(`/ping`, (req, res) => {
+  app.use(`/api/notifications`, initNotificationRoutes());
+  app.get(`/api/ping`, (req, res) => {
     res.send("Routes are working.");
   });
 };
