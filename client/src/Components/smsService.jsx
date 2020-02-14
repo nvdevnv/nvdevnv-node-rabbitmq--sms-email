@@ -41,7 +41,7 @@ export default function SmsService(props) {
         value={contactNumber}
         onChange={event => handleChange(event, "contactNumber")}
         required={true}
-        error={validationError}
+        error={validationError ? true : false}
       />
       <TextField
         id="sms-message"

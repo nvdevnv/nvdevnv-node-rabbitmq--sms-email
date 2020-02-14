@@ -46,7 +46,7 @@ export default function EmailService(props) {
         value={emailId}
         onChange={event => handleChange(event, "emailId")}
         required={true}
-        error={validationError}
+        error={validationError ? true : false}
       />
       <TextField
         id="outlined-secondary"
