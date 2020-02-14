@@ -2,14 +2,16 @@ import React, { useState } from "react";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import styles from "./smsServiceStyles";
+import validateData from "../utils/validations";
 
 export default function SmsService(props) {
-  const { send } = props;
+  const { send, setValidationError, validationError } = props;
   const classes = styles();
   const [contactNumber, setContactNumber] = useState("");
   const [smsMessage, setSmsMessage] = useState("");
 
   const handleChange = (event, type) => {
+    if (validationError) setValidationError(false);
     type === "contactNumber"
       ? setContactNumber(event.target.value)
       : setSmsMessage(event.target.value);
@@ -21,6 +23,11 @@ export default function SmsService(props) {
       message: smsMessage,
       type: "sms"
     };
+    const error = validateData(smsData);
+    if (error) {
+      setValidationError(error);
+      return;
+    }
     send(smsData);
     setContactNumber("");
     setSmsMessage("");
@@ -34,6 +41,7 @@ export default function SmsService(props) {
         value={contactNumber}
         onChange={event => handleChange(event, "contactNumber")}
         required={true}
+        error={validationError}
       />
       <TextField
         id="sms-message"

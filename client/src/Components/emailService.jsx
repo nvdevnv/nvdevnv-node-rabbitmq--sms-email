@@ -2,15 +2,17 @@ import React, { useState } from "react";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import styles from "./emailServiceStyles";
+import validateData from "../utils/validations";
 
 export default function EmailService(props) {
-  const { send } = props;
+  const { send, setValidationError, validationError } = props;
   const classes = styles();
   const [emailId, setEmailId] = useState();
   const [emailSubject, setEmailSubject] = useState();
   const [emailMessage, setEmailMessage] = useState();
 
   const handleChange = (event, type) => {
+    if (validationError) setValidationError(false);
     type === "emailId"
       ? setEmailId(event.target.value)
       : type === "emailSubject"
@@ -25,6 +27,11 @@ export default function EmailService(props) {
       subject: emailSubject,
       type: "email"
     };
+    const error = validateData(emailData);
+    if (error) {
+      setValidationError(error);
+      return;
+    }
     send(emailData);
     setEmailId("");
     setEmailSubject("");
@@ -39,6 +46,7 @@ export default function EmailService(props) {
         value={emailId}
         onChange={event => handleChange(event, "emailId")}
         required={true}
+        error={validationError}
       />
       <TextField
         id="outlined-secondary"
