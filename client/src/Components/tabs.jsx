@@ -40,7 +40,6 @@ export default function App() {
 
   useEffect(() => {
     if (apiResponse && apiResponse.status === 200) {
-      console.log("andar hai", apiResponse);
       setAlertType("success");
       setValidationError("successfully sent.");
     }
