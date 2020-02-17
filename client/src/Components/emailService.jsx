@@ -5,14 +5,23 @@ import styles from "./emailServiceStyles";
 import validateData from "../utils/validations";
 
 export default function EmailService(props) {
-  const { send, setValidationError, validationError } = props;
+  const {
+    send,
+    setValidationError,
+    validationError,
+    alertType,
+    setAlertType
+  } = props;
   const classes = styles();
   const [emailId, setEmailId] = useState();
   const [emailSubject, setEmailSubject] = useState();
   const [emailMessage, setEmailMessage] = useState();
 
   const handleChange = (event, type) => {
-    if (validationError) setValidationError(false);
+    if (validationError || alertType) {
+      setAlertType();
+      setValidationError();
+    }
     type === "emailId"
       ? setEmailId(event.target.value)
       : type === "emailSubject"
@@ -29,6 +38,7 @@ export default function EmailService(props) {
     };
     const error = validateData(emailData);
     if (error) {
+      setAlertType("error");
       setValidationError(error);
       return;
     }
@@ -46,7 +56,7 @@ export default function EmailService(props) {
         value={emailId}
         onChange={event => handleChange(event, "emailId")}
         required={true}
-        error={validationError ? true : false}
+        error={alertType === "error" ? true : false}
       />
       <TextField
         id="outlined-secondary"

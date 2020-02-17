@@ -9,7 +9,7 @@ const sendMessage = async data => {
     data
   };
 
-  await axios(API_URL, auxOptions);
+  return await axios(API_URL, auxOptions);
 };
 
 export default sendMessage;

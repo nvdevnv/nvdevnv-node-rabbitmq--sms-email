@@ -5,13 +5,22 @@ import styles from "./smsServiceStyles";
 import validateData from "../utils/validations";
 
 export default function SmsService(props) {
-  const { send, setValidationError, validationError } = props;
+  const {
+    send,
+    setValidationError,
+    validationError,
+    alertType,
+    setAlertType
+  } = props;
   const classes = styles();
   const [contactNumber, setContactNumber] = useState("");
   const [smsMessage, setSmsMessage] = useState("");
 
   const handleChange = (event, type) => {
-    if (validationError) setValidationError(false);
+    if (validationError || alertType) {
+      setAlertType();
+      setValidationError();
+    }
     type === "contactNumber"
       ? setContactNumber(event.target.value)
       : setSmsMessage(event.target.value);
@@ -25,6 +34,7 @@ export default function SmsService(props) {
     };
     const error = validateData(smsData);
     if (error) {
+      setAlertType("error");
       setValidationError(error);
       return;
     }
@@ -41,7 +51,7 @@ export default function SmsService(props) {
         value={contactNumber}
         onChange={event => handleChange(event, "contactNumber")}
         required={true}
-        error={validationError ? true : false}
+        error={alertType === "error" ? true : false}
       />
       <TextField
         id="sms-message"

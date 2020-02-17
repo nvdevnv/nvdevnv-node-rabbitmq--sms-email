@@ -6,7 +6,7 @@ import Tab from "@material-ui/core/Tab";
 import SmsService from "./smsService";
 import EmailServices from "./emailService";
 import apiRequest from "../utils/apiRequest";
-import ErrorAlert from "./errorAlert";
+import Alert from "./alert";
 
 const useStyles = makeStyles({
   root: {
@@ -29,16 +29,31 @@ export default function App() {
   const classes = useStyles();
   const [value, setValue] = useState(0);
   const [validationError, setValidationError] = useState();
+  const [alertType, setAlertType] = useState("error");
+  const [apiResponse, setApiResponse] = useState();
   const ComponentToRender = services[value].handler;
 
-  useEffect(() => setValidationError(), [value]);
+  useEffect(() => {
+    setValidationError();
+    setAlertType();
+  }, [value]);
+
+  useEffect(() => {
+    if (apiResponse && apiResponse.status === 200) {
+      console.log("andar hai", apiResponse);
+      setAlertType("success");
+      setValidationError("successfully sent.");
+    }
+  }, [apiResponse]);
 
   const handleChange = (event, newValue) => {
+    setAlertType();
     setValue(newValue);
   };
 
-  const handleSendMessage = messageData => {
-    apiRequest(messageData);
+  const handleSendMessage = async messageData => {
+    const response = await apiRequest(messageData);
+    setApiResponse(response);
   };
 
   return (
@@ -57,8 +72,12 @@ export default function App() {
         send={handleSendMessage}
         setValidationError={setValidationError}
         validationError={validationError}
+        alertType={alertType}
+        setAlertType={setAlertType}
       />
-      {validationError && <ErrorAlert errorMessage={validationError} />}
+      {validationError && (
+        <Alert message={validationError} alertType={alertType} />
+      )}
     </Paper>
   );
 }
