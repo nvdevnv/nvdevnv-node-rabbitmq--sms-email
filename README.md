@@ -23,6 +23,8 @@ To install the dependency, run the command:
 npm install
 ```
 
+**NOTE**: You need to create a `.env` file which will load the sensitive values. The content example of the file can be found in `.env.sample` file.
+
 To run the main nodejs app, simply run command:
 ```
 npm start
@@ -39,6 +41,8 @@ To install the dependency, run the command:
 ```
 cd client && npm install
 ```
+
+Create a file `client/.env` and fill in proper values as given in `client/.env.sample`
 
 To run the React app, simply run command:
 ```

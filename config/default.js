@@ -8,14 +8,14 @@ module.exports = {
   },
 
   twilio: {
-    authToken: "57c067f08c51dbba265de6b60950f49e",
-    accountSID: "AC7dda1642a513632ea6a88193f4dc680c",
-    fromNumber: "+17479998404"
+    authToken: process.env.TWILIO_AUTH_TOKEN,
+    accountSID: process.env.TWILIO_SID,
+    fromNumber: process.env.TWILIO_PHONE_NUMBER
   },
 
   sendgrid: {
     apiKey:
-      "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"
+      process.env.SENDGRID_API_KEY
   },
 
   rabbitmq: {
